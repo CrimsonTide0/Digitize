@@ -195,14 +195,15 @@ int main(void)
     {
         // Query Command
         printf("\nWould you like to add (A), search (S), delete (D), or close (C)?\n");
-        getchar();                                        //Consumes New Line Character
-        scanf("%s", left);
+        getchar();
+        scanf("%256[^\n]s", left);
         
         if (left[0] == 'a' || left[0] == 'A')
         {
             // Word Addition
             printf("\nInput Word (Addition):\n");
-            scanf("%s", line);
+            getchar();
+            scanf("%256[^\n]s", line);
             
             last = openBook(spawns);
             mark = 0;
@@ -271,16 +272,16 @@ int main(void)
                             int pure = 1;
                             
                             // Sorts Word
-                            for (int i = 0; i < spawns; i++)
-                            {   
-                                end1 = openBook(i);
+                            for (int j = 0; j < spawns; j++)
+                            {
+                                end1 = openBook(j);
                                 if (strcasecmp(end1 -> memo, end2 -> memo) > 0)
                                 {
                                     if (end1 != end2)
                                     {
                                         if (end1 != orig)
                                         {
-                                            openBook(i - 1) -> next = end2;
+                                            openBook(j - 1) -> next = end2;
                                             end2 -> next = end1;
                                             openBook(spawns - 1) -> next = NULL;
                                             break;
@@ -295,6 +296,7 @@ int main(void)
                                     }
                                 }
                             }
+                            break;
                         }
                         else
                         {
@@ -314,7 +316,7 @@ int main(void)
             {
                 printf("\nCase Sensitive Search? (y/n)\n");
                 getchar();
-                scanf("%s", line);
+                scanf("%256[^\n]s", line);
                 
                 if (line[0] == 'y' || line[0] == 'Y')
                 {
@@ -332,9 +334,53 @@ int main(void)
                 }
             }
             
-            // Search for Word
+            // Get Search Keyword
             printf("\nInput Word (Search):\n");
-            scanf("%4s", line);
+            getchar();
+            scanf("%256[^\n]s", left);
+            
+            // Find Word Beg
+            int beg = 0;
+            for (int i = 0; i < strlen(left); i++)
+            {
+                if (isalpha(left[i]) == 0)
+                {
+                    beg = i + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            // Find Word End
+            int end = beg;
+            for (int i = beg; i < strlen(left); i++)
+            {
+                if (isalpha(left[i]) != 0)
+                {
+                    end = i + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            // String Manipulation
+            strcpy(line, "");
+            if (end - beg < 4)
+            {
+                strncpy(line, left + beg, end - beg);
+                line[end - beg] = '\0';
+            }
+            else
+            {
+                strncpy(line, left + beg, 4);
+                line[end - beg] = '\0';
+            }
+            
+            // Word Search Results
             mark = 0;
             printf("\nResults:\n");
             
@@ -397,7 +443,7 @@ int main(void)
         {
             // End Input Loop
             printf("\nRecorded Entries:\n");
-            
+
             mark = 0;
             for (int i = 0; i < spawns; i++)
             {
