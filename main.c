@@ -377,7 +377,7 @@ int main(void)
             else
             {
                 strncpy(line, left + beg, 4);
-                line[end - beg] = '\0';
+                line[4] = '\0';
             }
             
             // Word Search Results
