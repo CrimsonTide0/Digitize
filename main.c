@@ -259,7 +259,7 @@ int main(void)
                                 // Update Counter
                                 spawns++;
                             }
-                            else if (mark == i && (i == strlen(line) - 1))
+                            else if (mark == i && i == strlen(line) - 1)
                             {
                                 // String Manipulation
                                 strcpy(copy, line);
