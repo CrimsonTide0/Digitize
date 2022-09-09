@@ -133,10 +133,28 @@ int main(void)
                     createWord(i - mark + 1, hold);
                 }
             }
+            else
+            {
+                if (i == strlen(line) - 1 && isalpha(line[i]) != 0)
+                {
+                    // String Manipulation
+                    strcpy(copy, line);
+                    strncpy(hold, copy + mark, 1);
+                    hold[1] = '\0';
+                    
+                    // Function Call
+                    createWord(1, hold);
+                }
+            }
             
             // Update Marker
             mark = i + 1;
         }
+    }
+    
+    if (orig == NULL)
+    {
+        orig = &list[0];
     }
     
     // List Sorting Algorithm (Selection Sort) - Consider Heap Sort For Large Lists
@@ -214,7 +232,7 @@ int main(void)
                 {
                     if (isalpha(line[i]) == 0 || i == strlen(line) - 1)
                     {
-                        if (mark != i)
+                        if (mark != i || (i == strlen(line) - 1 && isalpha(line[i]) != 0))
                         {
                             // Adds Word
                             if (isalpha(line[i]) == 0)
@@ -235,6 +253,22 @@ int main(void)
                                 // Impromptu Assignment
                                 strcpy(list[spawns].memo, hold);
                                 list[spawns].size = i - mark;
+                                last -> next = &list[spawns];
+                                last = &list[spawns];
+                                
+                                // Update Counter
+                                spawns++;
+                            }
+                            else if (mark == i && (i == strlen(line) - 1))
+                            {
+                                // String Manipulation
+                                strcpy(copy, line);
+                                strncpy(hold, copy + mark, 1);
+                                hold[1] = '\0';
+                                
+                                // Impromptu Assignment
+                                strcpy(list[spawns].memo, hold);
+                                list[spawns].size = 1;
                                 last -> next = &list[spawns];
                                 last = &list[spawns];
                                 
@@ -443,7 +477,7 @@ int main(void)
         {
             // End Input Loop
             printf("\nRecorded Entries:\n");
-
+            
             mark = 0;
             for (int i = 0; i < spawns; i++)
             {
